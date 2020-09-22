@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ambassador-container-demo
+spec:
+  containers:
+  - image: bbachin1/main-container
+    name: main-container
+    imagePullPolicy: Always
+    resources: {}
+    ports:
+      - containerPort: 9000
+  - image: bbachin1/nginx-server-proxy
+    name: ambassador-container
+    imagePullPolicy: Always
+    resources: {}
+    ports:
+      - containerPort: 3000
+  dnsPolicy: Default

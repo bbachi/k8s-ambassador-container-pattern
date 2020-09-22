@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: node-server
+  name: node-server
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: node-server
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: node-server
+    spec:
+      containers:
+      - image: bbachin1/main-container
+        name: main-container
+        imagePullPolicy: Always
+        resources: {}
+        ports:
+          - containerPort: 9000
+      - image: bbachin1/nginx-server-proxy
+        name: ambassador-container
+        imagePullPolicy: Always
+        resources: {}
+        ports:
+          - containerPort: 3000
+      dnsPolicy: Default
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-server
+  labels:
+    run: node-server
+spec:
+  ports:
+  - port: 9000
+    protocol: TCP
+  selector:
+    app: node-server
+  type: NodePort
